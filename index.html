@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Matriks Keutamaan — Fiqh al-Awlawiyyat</title>
+  <title>Matriks Keutamaan Amal — Fiqh al-Awlawiyyat</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
 </head>
@@ -11,95 +11,113 @@
 
   <div class="mobile-app">
     
-    <!-- Header Aplikasi -->
-    <header class="app-topbar">
-      <div>
-        <div class="brand-row">
-          <span class="user-badge">NABILA • UX</span>
-          <span class="hadith-pill">Rebut 5 Perkara Sebelum 5 Perkara</span>
-        </div>
-        <h1>Matriks Keutamaan</h1>
-        <p class="subtitle">Fiqh al-Awlawiyyat & Pengurusan Masa</p>
+    <!-- Header Islamik -->
+    <header class="islamic-header">
+      <div class="header-top">
+        <span class="app-tag">NABILA • UX & ISLAMIC PRODUCTIVITY</span>
+        <span class="hijri-badge">🕌 Fiqh al-Awlawiyyat</span>
       </div>
-      <div class="total-badge" id="total-count">0 Tugas</div>
+      <h1>Matriks Keutamaan Amal</h1>
+      <p class="quran-quote">"Demi masa, sesungguhnya manusia itu berada dalam kerugian..." — (Surah Al-'Asr)</p>
+      
+      <!-- Kad Muhasabah Ringkas -->
+      <div class="muhasabah-bar">
+        <div>
+          <span class="muhasabah-title">Audit Masa Hari Ini</span>
+          <span class="muhasabah-sub" id="muhasabah-status">Selesaikan yang wajib & utama</span>
+        </div>
+        <div class="amal-count" id="total-count">0 Amal</div>
+      </div>
     </header>
 
-    <!-- Navigasi Tab Mobile -->
+    <!-- Butang Cadangan Pantas (Amal Presets) -->
+    <div class="presets-container">
+      <span class="presets-label">⚡ Tambah Pantas:</span>
+      <div class="presets-scroll">
+        <button class="preset-chip" onclick="addPreset('Solat di awal waktu & zikir', 'schedule')">🕌 Solat Awal Waktu</button>
+        <button class="preset-chip" onclick="addPreset('Selesaikan amanah kerja/deadline', 'do')">⚡ Deadline Kerja</button>
+        <button class="preset-chip" onclick="addPreset('Tadabbur Al-Quran 1 muka', 'schedule')">📖 Baca Quran</button>
+        <button class="preset-chip" onclick="addPreset('Bantu mak/keluarga di rumah', 'do')">❤️ Khidmat Keluarga</button>
+        <button class="preset-chip" onclick="addPreset('Kurangkan scroll TikTok/Medsos', 'delete')">🚫 Henti Lagha</button>
+      </div>
+    </div>
+
+    <!-- Tab Filter Mobile -->
     <nav class="tab-nav">
       <button class="tab-btn active" onclick="switchTab('all')">Semua</button>
-      <button class="tab-btn tab-do" onclick="switchTab('do')">⚡ Segera <span id="badge-do">0</span></button>
-      <button class="tab-btn tab-schedule" onclick="switchTab('schedule')">📅 Istiqamah <span id="badge-schedule">0</span></button>
-      <button class="tab-btn tab-delegate" onclick="switchTab('delegate')">🤝 Wakilkan <span id="badge-delegate">0</span></button>
-      <button class="tab-btn tab-delete" onclick="switchTab('delete')">🗑️ Lagha <span id="badge-delete">0</span></button>
+      <button class="tab-btn tab-do" onclick="switchTab('do')">1. Wajib Segera <span id="badge-do">0</span></button>
+      <button class="tab-btn tab-schedule" onclick="switchTab('schedule')">2. Istiqamah <span id="badge-schedule">0</span></button>
+      <button class="tab-btn tab-delegate" onclick="switchTab('delegate')">3. Wakalah <span id="badge-delegate">0</span></button>
+      <button class="tab-btn tab-delete" onclick="switchTab('delete')">4. Lagha <span id="badge-delete">0</span></button>
     </nav>
 
     <!-- Senarai Kuadran -->
     <main class="quadrants-scroll">
       
-      <!-- Kuadran 1: SEGERA / DO -->
+      <!-- KUADRAN 1: WAJIB SEGERA & DARURAT -->
       <section class="mobile-card quad-do" id="card-do">
         <div class="card-header">
-          <div class="title-row">
-            <span class="status-tag">MENDESAK & PENTING</span>
-            <span class="count-pill" id="header-count-do">0</span>
+          <div class="badge-row">
+            <span class="islamic-tag">DARURAT & FARDHU AIN</span>
+            <span class="pill-count" id="count-do">0</span>
           </div>
-          <h2>1. BUAT SEGERA (DO)</h2>
-          <p class="islamic-desc">Wajib, darurat & amanah dengan tarikh luput kritikal.</p>
+          <h2>1. WAJIB SEGERA (Buat Terus)</h2>
+          <p>Amanah kritikal, janji bertempoh & solat yang hampir luput waktu.</p>
         </div>
         <ul class="task-list" id="list-do"></ul>
       </section>
 
-      <!-- Kuadran 2: JADUALKAN / SCHEDULE -->
+      <!-- KUADRAN 2: ISTIQAMAH & BEKALAN AKHIRAT -->
       <section class="mobile-card quad-schedule" id="card-schedule">
         <div class="card-header">
-          <div class="title-row">
-            <span class="status-tag">PENTING & UTAMA</span>
-            <span class="count-pill" id="header-count-schedule">0</span>
+          <div class="badge-row">
+            <span class="islamic-tag">PELABURAN AKHIRAT & ILMU</span>
+            <span class="pill-count" id="count-schedule">0</span>
           </div>
-          <h2>2. ISTIQAMAH (SCHEDULE)</h2>
-          <p class="islamic-desc">Pelaburan akhirat, menuntut ilmu, kesihatan & keluarga.</p>
+          <h2>2. ISTIQAMAH (Jadualkan & Rancang)</h2>
+          <p>Kunci kejayaan mukmin: Solat awal, menuntut ilmu, kesihatan diri & silaturahim.</p>
         </div>
         <ul class="task-list" id="list-schedule"></ul>
       </section>
 
-      <!-- Kuadran 3: WAKILKAN / DELEGATE -->
+      <!-- KUADRAN 3: URUSAN RUTIN & WAKALAH -->
       <section class="mobile-card quad-delegate" id="card-delegate">
         <div class="card-header">
-          <div class="title-row">
-            <span class="status-tag">MENDESAK TAPI REMEH</span>
-            <span class="count-pill" id="header-count-delegate">0</span>
+          <div class="badge-row">
+            <span class="islamic-tag">URUSAN DUNIAWI / WAKALAH</span>
+            <span class="pill-count" id="count-delegate">0</span>
           </div>
-          <h2>3. WAKILKAN (DELEGATE)</h2>
-          <p class="islamic-desc">Urusan harian yang boleh diagihkan/diserahkan kepada orang lain.</p>
+          <h2>3. WAKILKAN (Agihkan Tugas)</h2>
+          <p>Hal harian yang nampak mendesak tapi boleh diserahkan kepada orang lain.</p>
         </div>
         <ul class="task-list" id="list-delegate"></ul>
       </section>
 
-      <!-- Kuadran 4: TINGGALKAN / DELETE -->
+      <!-- KUADRAN 4: TINGGALKAN LAGHA -->
       <section class="mobile-card quad-delete" id="card-delete">
         <div class="card-header">
-          <div class="title-row">
-            <span class="status-tag">TIDAK PENTING</span>
-            <span class="count-pill" id="header-count-delete">0</span>
+          <div class="badge-row">
+            <span class="islamic-tag">HAL SIA-SIA (LAGHA)</span>
+            <span class="pill-count" id="count-delete">0</span>
           </div>
-          <h2>4. TINGGALKAN (DELETE)</h2>
-          <p class="islamic-desc">Perkara lagha (sia-sia) yang menghabiskan masa tanpa faedah.</p>
+          <h2>4. TINGGALKAN (Hapuskan)</h2>
+          <p>Membazir masa, drama medsos, lepak kosong tanpa manfaat dunia dan akhirat.</p>
         </div>
         <ul class="task-list" id="list-delete"></ul>
       </section>
 
     </main>
 
-    <!-- Ruang Tambah Tugas di Bahagian Bawah (Bottom Bar) -->
+    <!-- Bottom Input Bar (Tambah Tugasan Baru) -->
     <footer class="bottom-bar">
-      <input type="text" id="task-input" placeholder="Tulis tugasan baru..." />
+      <input type="text" id="task-input" placeholder="Tulis niat / tugasan baru..." />
       <select id="quadrant-select">
-        <option value="do">⚡ Segera (Do)</option>
-        <option value="schedule">📅 Istiqamah (Schedule)</option>
-        <option value="delegate">🤝 Wakilkan (Delegate)</option>
-        <option value="delete">🗑️ Lagha (Delete)</option>
+        <option value="do">🔴 Wajib Segera</option>
+        <option value="schedule">🟢 Istiqamah Akhirat</option>
+        <option value="delegate">🟡 Urusan/Wakilkan</option>
+        <option value="delete">⚪ Tinggalkan Lagha</option>
       </select>
-      <button id="add-btn" aria-label="Tambah Tugas">+</button>
+      <button id="add-btn" aria-label="Tambah">+</button>
     </footer>
 
   </div>
