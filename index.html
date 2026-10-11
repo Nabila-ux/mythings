@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -19,7 +19,7 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 12px;
+      padding: 10px;
     }
 
     /* KANVAS PUTIH UTAMA */
@@ -27,55 +27,50 @@
       width: 100%;
       max-width: 860px;
       background-color: #ffffff;
-      padding: 24px 20px 20px;
+      padding: 20px 18px 16px;
       border: 1px solid #d1d5db;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
 
-    /* TAJUK ASAL GOOGLE DOCS */
+    /* TAJUK ASAL (DIBUANG "in Google Docs") */
     .doc-title {
       font-size: 19px;
-      font-weight: 700;
-      color: #4b5563;
-      margin-bottom: 8px;
+      font-weight: 800;
+      color: #374151;
       letter-spacing: 0.5px;
+      margin-bottom: 8px;
     }
 
-    .doc-title span {
-      font-weight: 300;
-      color: #6b7280;
-    }
-
-    /* MOTIVASI ISLAMIK */
-    .islamic-quote-bar {
+    /* BANNER MOTIVASI & PENDORONG PANTAS (HAPUS PENANGGUHAN) */
+    .motivation-banner {
       background: #f0fdf4;
+      border: 1px solid #bbf7d0;
       border-left: 4px solid #16a34a;
       padding: 8px 12px;
       border-radius: 4px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
+      flex-direction: column;
+      gap: 2px;
     }
 
-    .quote-text {
-      font-size: 11.5px;
+    .arabic-quote {
+      font-family: 'Amiri', 'Traditional Arabic', serif;
+      font-size: 14px;
+      direction: rtl;
+      text-align: right;
+      color: #065f46;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .translation-quote {
+      font-size: 11px;
       color: #166534;
       font-style: italic;
     }
 
-    .quote-tag {
-      font-size: 10px;
-      font-weight: 700;
-      background: #dcfce7;
-      color: #15803d;
-      padding: 2px 8px;
-      border-radius: 12px;
-      white-space: nowrap;
-    }
-
-    /* SUSUNAN MATRIKS + PAKSI Y */
+    /* MATRIKS + PAKSI Y */
     .matrix-container {
       display: flex;
       width: 100%;
@@ -126,11 +121,11 @@
     .y-text {
       writing-mode: vertical-rl;
       transform: rotate(180deg);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       color: #374151;
-      margin: 10px 0;
+      margin: 8px 0;
       white-space: nowrap;
     }
 
@@ -148,39 +143,47 @@
       border: 1px solid #9ca3af;
       display: flex;
       flex-direction: column;
-      min-height: 200px;
-      height: 25vh;
+      min-height: 220px;
+      height: 27vh;
     }
 
     /* HEADER KOTAK */
     .q-head-top {
       color: #ffffff;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 800;
-      padding: 6px 10px;
+      padding: 5px 8px;
       letter-spacing: 0.5px;
     }
 
     .q-head-sub {
-      padding: 5px 10px;
+      padding: 5px 8px;
       display: flex;
       flex-direction: column;
       line-height: 1.25;
     }
 
     .q-sub-title {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 800;
       color: #111827;
       margin-bottom: 1px;
     }
 
+    .q-arabic-ayah {
+      font-family: 'Amiri', 'Traditional Arabic', serif;
+      font-size: 11.5px;
+      font-weight: bold;
+      color: #064e3b;
+      margin-bottom: 1px;
+    }
+
     .q-sub-desc {
-      font-size: 9.5px;
+      font-size: 9px;
       color: #1f2937;
     }
 
-    /* WARNA TEPAT DENGAN TEMPLAT GAMBAR */
+    /* WARNA ASAL IKUT TEMPLAT */
     /* Q1: URGENT / DO */
     .bg-urgent { background-color: #349b99; }
     .bg-do { background-color: #6de2dc; }
@@ -197,36 +200,72 @@
     .bg-insignificant { background-color: #f16e23; }
     .bg-delete { background-color: #fdb035; }
 
-    /* RUANG TUGASAN INTERAKTIF & BOLEH DIEDIT */
+    /* RUANG TUGASAN DALAM BENTUK POINT (BULLET POINTS) */
     .task-area {
       flex: 1;
       padding: 6px 8px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 5px;
     }
 
-    .task-item {
+    .point-item {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      padding: 4px 6px;
-      border-radius: 4px;
+      align-items: flex-start;
+      gap: 6px;
       font-size: 11px;
+      line-height: 1.3;
+      padding: 3px 4px;
+      border-radius: 4px;
+      background: #fdfdfd;
+      border: 1px solid #f1f5f9;
     }
 
-    .task-item span {
+    .bullet-dot {
+      color: #4b5563;
+      font-size: 14px;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .point-text {
       flex: 1;
       cursor: pointer;
       color: #1e293b;
+      font-weight: 500;
+      word-break: break-word;
     }
 
-    .task-item.done span {
+    /* APABILA DIBATALKAN / SELESAI */
+    .point-item.cancelled .point-text {
       text-decoration: line-through;
       color: #94a3b8;
+    }
+
+    .point-item.cancelled .bullet-dot {
+      color: #94a3b8;
+    }
+
+    .action-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .cancel-toggle-btn {
+      background: none;
+      border: none;
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #64748b;
+      cursor: pointer;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    .cancel-toggle-btn:hover {
+      background: #e2e8f0;
     }
 
     .del-btn {
@@ -242,14 +281,15 @@
       color: #ef4444;
     }
 
-    .add-task-row {
+    /* BAR TAMBAH POINT */
+    .add-point-bar {
       display: flex;
       padding: 4px 6px;
       border-top: 1px dashed #e2e8f0;
       gap: 4px;
     }
 
-    .add-task-row input {
+    .add-point-bar input {
       flex: 1;
       border: 1px solid #cbd5e1;
       border-radius: 3px;
@@ -258,7 +298,7 @@
       outline: none;
     }
 
-    .add-task-row button {
+    .add-point-bar button {
       background: #0f172a;
       color: white;
       border: none;
@@ -273,7 +313,7 @@
     .x-axis-wrapper {
       width: 100%;
       padding-left: 56px;
-      margin-top: 14px;
+      margin-top: 12px;
     }
 
     .x-axis {
@@ -309,7 +349,7 @@
     .x-text {
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       color: #374151;
       white-space: nowrap;
     }
@@ -322,43 +362,49 @@
       border-left: 14px solid #f16e23;
     }
 
-    /* ADAPTASI SKRIN TELEFON */
+    /* RESPONSIVE UNTUK TELEFON */
     @media (max-width: 600px) {
       .canvas {
-        padding: 14px 8px;
+        padding: 12px 6px;
       }
       .doc-title {
-        font-size: 13.5px;
+        font-size: 14px;
       }
-      .islamic-quote-bar {
-        padding: 6px 8px;
+      .arabic-quote {
+        font-size: 12px;
       }
-      .quote-text {
-        font-size: 10px;
+      .translation-quote {
+        font-size: 9.5px;
       }
       .axis-y {
-        width: 28px;
+        width: 26px;
         margin-right: 6px;
       }
       .y-text, .x-text {
-        font-size: 8.5px;
+        font-size: 8px;
         letter-spacing: 1.5px;
       }
       .quad-card {
-        min-height: 175px;
+        min-height: 185px;
       }
       .q-head-top {
-        font-size: 10.5px;
+        font-size: 10px;
         padding: 4px 6px;
       }
       .q-sub-title {
+        font-size: 9.5px;
+      }
+      .q-arabic-ayah {
         font-size: 10px;
       }
       .q-sub-desc {
         font-size: 7.5px;
       }
+      .point-item {
+        font-size: 9.5px;
+      }
       .x-axis-wrapper {
-        padding-left: 34px;
+        padding-left: 32px;
         margin-top: 8px;
       }
     }
@@ -368,13 +414,13 @@
 
   <div class="canvas">
     
-    <!-- TAJUK TEMPLAT -->
-    <h1 class="doc-title">EISENHOWER MATRIX TEMPLATE <span>in Google Docs</span></h1>
+    <!-- TAJUK UTAMA -->
+    <h1 class="doc-title">EISENHOWER MATRIX TEMPLATE</h1>
 
-    <!-- MOTIVASI ISLAMIK -->
-    <div class="islamic-quote-bar">
-      <p class="quote-text" id="quote-display">"Rebutlah lima perkara sebelum lima perkara: Masa lapangmu sebelum sibukmu, sihatmu sebelum sakitmu..."</p>
-      <span class="quote-tag">HR. Al-Hakim</span>
+    <!-- MOTIVASI PENDORONG ISLAMIK: HAPUS PENANGGUHAN (TASWIF) -->
+    <div class="motivation-banner">
+      <div class="arabic-quote">« إِذَا أَمْسَيْتَ فَلَا تَنْتَظِرِ الصَّبَاحَ، وَإِذَا أَصْبَحْتَ فَلَا تَنْتَظِرِ الْمَسَاءَ »</div>
+      <div class="translation-quote">"Jika kamu berada di waktu petang jangan tunggu waktu pagi; jika di waktu pagi jangan tunggu petang (jangan bertangguh)." — (HR. Al-Bukhari)</div>
     </div>
 
     <!-- MATRIKS + PAKSI Y -->
@@ -397,12 +443,13 @@
         <div class="quad-card">
           <div class="q-head-top bg-urgent">URGENT</div>
           <div class="q-head-sub bg-do">
-            <span class="q-sub-title">DO</span>
-            <span class="q-sub-desc">These are vital tasks with substantial urgency.</span>
+            <span class="q-sub-title">DO • WAJIB SEGERA</span>
+            <span class="q-arabic-ayah">﴿ فَاسْتَبِقُوا الْخَيْرَاتِ ﴾</span>
+            <span class="q-sub-desc">Berlumba dalam kebaikan. Selesaikan amanah kritikal tanpa bertangguh.</span>
           </div>
           <div class="task-area" id="tasks-do"></div>
-          <div class="add-task-row">
-            <input type="text" id="input-do" placeholder="+ Add vital task..." onkeypress="handleEnter(event, 'do')" />
+          <div class="add-point-bar">
+            <input type="text" id="input-do" placeholder="+ Tambah point segera..." onkeypress="handleEnter(event, 'do')" />
             <button onclick="addTask('do')">+</button>
           </div>
         </div>
@@ -411,12 +458,13 @@
         <div class="quad-card">
           <div class="q-head-top bg-significant">SIGNIFICANT</div>
           <div class="q-head-sub bg-schedule">
-            <span class="q-sub-title">SCHEDULE</span>
-            <span class="q-sub-desc">These are critical tasks with minimal urgency.</span>
+            <span class="q-sub-title">SCHEDULE • ISTIQAMAH</span>
+            <span class="q-arabic-ayah">﴿ فَإِذَا فَرَغْتَ فَانصَبْ ﴾</span>
+            <span class="q-sub-desc">Apabila selesai satu urusan, rancang amal seterusnya (Ilmu, kesihatan, akhirat).</span>
           </div>
           <div class="task-area" id="tasks-schedule"></div>
-          <div class="add-task-row">
-            <input type="text" id="input-schedule" placeholder="+ Add critical task..." onkeypress="handleEnter(event, 'schedule')" />
+          <div class="add-point-bar">
+            <input type="text" id="input-schedule" placeholder="+ Tambah point istiqamah..." onkeypress="handleEnter(event, 'schedule')" />
             <button onclick="addTask('schedule')">+</button>
           </div>
         </div>
@@ -425,12 +473,13 @@
         <div class="quad-card">
           <div class="q-head-top bg-not-urgent">NOT URGENT</div>
           <div class="q-head-sub bg-delegate">
-            <span class="q-sub-title">DELEGATE</span>
-            <span class="q-sub-desc">These are pressing tasks with negligible impact.</span>
+            <span class="q-sub-title">DELEGATE • WAKILKAN</span>
+            <span class="q-arabic-ayah">﴿ وَتَعَاوَنُوا عَلَى الْبِرِّ ﴾</span>
+            <span class="q-sub-desc">Tolong-menolong. Agihkan urusan rutin yang boleh diserahkan kepada orang lain.</span>
           </div>
           <div class="task-area" id="tasks-delegate"></div>
-          <div class="add-task-row">
-            <input type="text" id="input-delegate" placeholder="+ Add pressing task..." onkeypress="handleEnter(event, 'delegate')" />
+          <div class="add-point-bar">
+            <input type="text" id="input-delegate" placeholder="+ Tambah point wakalah..." onkeypress="handleEnter(event, 'delegate')" />
             <button onclick="addTask('delegate')">+</button>
           </div>
         </div>
@@ -439,12 +488,13 @@
         <div class="quad-card">
           <div class="q-head-top bg-insignificant">INSIGNIFICANT</div>
           <div class="q-head-sub bg-delete">
-            <span class="q-sub-title">DELETE</span>
-            <span class="q-sub-desc">These are trivial tasks with minor urgency.</span>
+            <span class="q-sub-title">DELETE • HAPUS LAGHA</span>
+            <span class="q-arabic-ayah">« تَرْكُهُ مَا لَا يَعْنِيهِ »</span>
+            <span class="q-sub-desc">Tinggalkan hal sia-sia. Padam tabiat membuang masa & bertangguh.</span>
           </div>
           <div class="task-area" id="tasks-delete"></div>
-          <div class="add-task-row">
-            <input type="text" id="input-delete" placeholder="+ Add trivial task..." onkeypress="handleEnter(event, 'delete')" />
+          <div class="add-point-bar">
+            <input type="text" id="input-delete" placeholder="+ Catat point lagha untuk dibuang..." onkeypress="handleEnter(event, 'delete')" />
             <button onclick="addTask('delete')">+</button>
           </div>
         </div>
@@ -467,31 +517,48 @@
   </div>
 
   <script>
-    // State Simpanan Tugasan
-    let tasks = JSON.parse(localStorage.getItem('eisenhower_tasks_v2')) || {
-      do: [{ text: "Solat awal waktu & amanah kerja utama", done: false }],
-      schedule: [{ text: "Tadabbur Quran & kesihatan diri", done: false }],
-      delegate: [{ text: "Agihkan urusan rutin harian", done: false }],
-      delete: [{ text: "Elak scroll medsos tanpa tujuan", done: false }]
+    // Memori Penyimpanan Tugasan (LocalStorage)
+    let points = JSON.parse(localStorage.getItem('matrix_islamic_points')) || {
+      do: [
+        { text: "Solat fardhu awal waktu", cancelled: false },
+        { text: "Selesaikan amanah kerja kritikal", cancelled: false }
+      ],
+      schedule: [
+        { text: "Tadabbur Al-Quran 1 muka surat", cancelled: false },
+        { text: "Riadah & jaga kesihatan tubuh badan", cancelled: false }
+      ],
+      delegate: [
+        { text: "Serahkan tugas rutin/urusan harian", cancelled: false }
+      ],
+      delete: [
+        { text: "Henti scroll medsos berjam tanpa tujuan", cancelled: false },
+        { text: "Buang tabiat menangguh urusan (taswif)", cancelled: false }
+      ]
     };
 
-    function renderTasks() {
+    function renderPoints() {
       ['do', 'schedule', 'delegate', 'delete'].forEach(q => {
         const container = document.getElementById(`tasks-${q}`);
         container.innerHTML = '';
-        
-        tasks[q].forEach((task, index) => {
+
+        points[q].forEach((item, index) => {
           const div = document.createElement('div');
-          div.className = `task-item ${task.done ? 'done' : ''}`;
+          div.className = `point-item ${item.cancelled ? 'cancelled' : ''}`;
           div.innerHTML = `
-            <span onclick="toggleTask('${q}', ${index})">${task.text}</span>
-            <button class="del-btn" onclick="deleteTask('${q}', ${index})">&times;</button>
+            <span class="bullet-dot">•</span>
+            <span class="point-text" onclick="toggleCancel('${q}', ${index})">${item.text}</span>
+            <div class="action-btn-group">
+              <button class="cancel-toggle-btn" onclick="toggleCancel('${q}', ${index})">
+                ${item.cancelled ? 'Undo' : 'Batal'}
+              </button>
+              <button class="del-btn" onclick="deletePoint('${q}', ${index})">&times;</button>
+            </div>
           `;
           container.appendChild(div);
         });
       });
 
-      localStorage.setItem('eisenhower_tasks_v2', JSON.stringify(tasks));
+      localStorage.setItem('matrix_islamic_points', JSON.stringify(points));
     }
 
     function addTask(q) {
@@ -499,27 +566,27 @@
       const text = input.value.trim();
       if (!text) return;
 
-      tasks[q].push({ text, done: false });
+      points[q].push({ text, cancelled: false });
       input.value = '';
-      renderTasks();
+      renderPoints();
     }
 
     function handleEnter(e, q) {
       if (e.key === 'Enter') addTask(q);
     }
 
-    function toggleTask(q, index) {
-      tasks[q][index].done = !tasks[q][index].done;
-      renderTasks();
+    function toggleCancel(q, index) {
+      points[q][index].cancelled = !points[q][index].cancelled;
+      renderPoints();
     }
 
-    function deleteTask(q, index) {
-      tasks[q].splice(index, 1);
-      renderTasks();
+    function deletePoint(q, index) {
+      points[q].splice(index, 1);
+      renderPoints();
     }
 
-    // Render Kali Pertama
-    renderTasks();
+    // Papar tugas kali pertama
+    renderPoints();
   </script>
 </body>
 </html>
