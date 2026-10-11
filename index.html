@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Eisenhower Matrix Template</title>
+
+  <!-- FIREBASE CLOUD DATABASE SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
   <style>
     * {
       margin: 0;
@@ -32,16 +37,42 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
 
-    /* TAJUK UTAMA (TANPA in Google Docs) */
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
     .doc-title {
       font-size: 19px;
       font-weight: 800;
       color: #374151;
       letter-spacing: 0.5px;
-      margin-bottom: 8px;
     }
 
-    /* BANNER MOTIVASI: HAPUS PENANGGUHAN (TASWIF) */
+    /* STATUS PENYAMBUNGAN CLOUD DATABASE */
+    .db-status-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .db-status-badge.connected {
+      background: #dcfce7;
+      color: #15803d;
+    }
+    .db-status-badge.local {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    /* MOTIVASI PENDORONG ISLAMIK */
     .motivation-banner {
       background: #f0fdf4;
       border: 1px solid #bbf7d0;
@@ -184,23 +215,19 @@
     }
 
     /* WARNA ASAL IKUT TEMPLAT */
-    /* Q1: URGENT / DO */
     .bg-urgent { background-color: #349b99; }
     .bg-do { background-color: #6de2dc; }
 
-    /* Q2: SIGNIFICANT / SCHEDULE */
     .bg-significant { background-color: #00a651; }
     .bg-schedule { background-color: #9be382; }
 
-    /* Q3: NOT URGENT / DELEGATE */
     .bg-not-urgent { background-color: #f0131e; }
     .bg-delegate { background-color: #ff7965; }
 
-    /* Q4: INSIGNIFICANT / DELETE */
     .bg-insignificant { background-color: #f16e23; }
     .bg-delete { background-color: #fdb035; }
 
-    /* RUANG TUGASAN POINT (EDITABLE) */
+    /* RUANG TUGASAN POINT */
     .task-area {
       flex: 1;
       padding: 6px 8px;
@@ -237,7 +264,7 @@
       cursor: pointer;
     }
 
-    /* TEKS YANG BOLEH DIEDIT TERUS (EDITABLE INLINE) */
+    /* TEKS YANG BOLEH DIEDIT TERUS */
     .point-text {
       flex: 1;
       color: #1e293b;
@@ -253,7 +280,6 @@
       background: #f8fafc;
     }
 
-    /* APABILA DIBATALKAN / SELESAI */
     .point-item.cancelled .point-text {
       text-decoration: line-through;
       color: #94a3b8;
@@ -432,8 +458,11 @@
 
   <div class="canvas">
     
-    <!-- TAJUK UTAMA -->
-    <h1 class="doc-title">EISENHOWER MATRIX TEMPLATE</h1>
+    <!-- TAJUK UTAMA + STATUS DATABASE -->
+    <div class="header-row">
+      <h1 class="doc-title">EISENHOWER MATRIX TEMPLATE</h1>
+      <span class="db-status-badge local" id="db-status">🟡 Simpanan Tempatan</span>
+    </div>
 
     <!-- MOTIVASI PENDORONG ISLAMIK: HAPUS PENANGGUHAN (TASWIF) -->
     <div class="motivation-banner">
@@ -534,60 +563,95 @@
 
   </div>
 
-  <<script>
-    // SISTEM AUTO-RESTORE (Cari semua data lama yang pernah anda taip)
-    function loadSavedHistory() {
-      // Semak semua kunci memori yang pernah digunakan sebelum ini
-      const oldKeys = [
-        'matrix_editable_points',
-        'matrix_islamic_points',
-        'eisenhower_tasks_v2',
-        'eisenhower_exact_shape_tasks',
-        'islamic_matrix_tasks',
-        'eisenhower_tasks'
-      ];
+  <script>
+    // ==========================================
+    // ⚙️ 1. MASUKKAN MAKLUMAT FIREBASE ANDA DI SINI
+    // ==========================================
+    const firebaseConfig = {
+       apiKey: "AIzaSyDVv66gpAPYDLDbrMecV_NWRJhwHl7NZQ0",
+  authDomain: "my-priority-twojuan.firebaseapp.com",
+  databaseURL: "https://my-priority-twojuan-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "my-priority-twojuan",
+  storageBucket: "my-priority-twojuan.firebasestorage.app",
+  messagingSenderId: "904150244086",
+  appId: "1:904150244086:web:98d9facfae2a1eeb57ead7",
+  measurementId: "G-1C3V8YTBNY"
+    };
 
-      for (let key of oldKeys) {
-        const data = localStorage.getItem(key);
-        if (data) {
-          try {
-            const parsed = JSON.parse(data);
-            // Jika format objek { do: [], schedule: [] }
-            if (parsed.do && Array.isArray(parsed.do)) {
-              return parsed;
-            }
-            // Jika format senarai array [{text, quadrant}]
-            if (Array.isArray(parsed)) {
-              let converted = { do: [], schedule: [], delegate: [], delete: [] };
-              parsed.forEach(item => {
-                const q = item.quadrant || 'do';
-                if (converted[q]) {
-                  converted[q].push({ text: item.text, cancelled: item.completed || false });
-                }
-              });
-              return converted;
-            }
-          } catch (e) {}
-        }
-      }
+    // Sambungan Database Firestore
+    let db = null;
+    const isFirebaseConfigured = firebaseConfig.apiKey && firebaseConfig.apiKey !== "GANTIKAN_DENGAN_API_KEY_ANDA";
+    const statusBadge = document.getElementById('db-status');
 
-      // Default jika memang peranti baru
-      return {
-        do: [{ text: "Solat fardhu awal waktu", cancelled: false }],
-        schedule: [{ text: "Tadabbur Al-Quran 1 muka surat", cancelled: false }],
-        delegate: [{ text: "Serahkan urusan rutin/harian", cancelled: false }],
-        delete: [{ text: "Buang tabiat menangguh urusan (taswif)", cancelled: false }]
-      };
+    let points = {
+      do: [
+        { text: "Prepare IPK - before Selasa (11 oct) - kena set utk jumpa dgn Mariam ?", cancelled: false },
+        { text: "Kak nisa (utk ditemuduga) - course keusahawanan mariam - bila?", cancelled: false },
+        { text: "3 qul , presentation and tot - this week", cancelled: false }
+      ],
+      schedule: [
+        { text: "Tadabbur Al-Quran 1 muka surat", cancelled: false },
+        { text: "Cari Canva AI plan shoppe - utk code buat slide", cancelled: false }
+      ],
+      delegate: [],
+      delete: [
+        { text: "Buang tabiat menangguh urusan (taswif)", cancelled: false },
+        { text: "Stop doom scrolling and focus hilang (Tiktok)", cancelled: false }
+      ]
+    };
+
+    // Muat data dari LocalStorage terlebih dahulu
+    const localData = localStorage.getItem('matrix_cloud_points');
+    if (localData) {
+      try { points = JSON.parse(localData); } catch (e) {}
     }
 
-    let points = loadSavedHistory();
+    // Inisialisasi Firebase jika config telah diisi
+    if (isFirebaseConfigured) {
+      try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+        
+        statusBadge.textContent = "🟢 Cloud Sync (Firestore Aktif)";
+        statusBadge.className = "db-status-badge connected";
 
-    function renderPoints() {
+        // MENDENGAR PERUBAHAN SECARA LIVE / REAL-TIME
+        db.collection("matrix_app").doc("tasks").onSnapshot((doc) => {
+          if (doc.exists) {
+            points = doc.data();
+            renderPoints(false); // Render tanpa tulis balik
+          } else {
+            saveData(); // Muat naik data kali pertama
+          }
+        }, (error) => {
+          console.warn("Firestore belum diaktifkan:", error);
+          statusBadge.textContent = "🟡 Semak Firestore Rules";
+          statusBadge.className = "db-status-badge local";
+        });
+      } catch (err) {
+        console.error("Firebase Init Error:", err);
+      }
+    } else {
+      statusBadge.textContent = "🟡 Simpanan Tempatan (Local)";
+      statusBadge.className = "db-status-badge local";
+    }
+
+    // Fungsi simpan (Cloud + Local)
+    function saveData() {
+      localStorage.setItem('matrix_cloud_points', JSON.stringify(points));
+      if (db) {
+        db.collection("matrix_app").doc("tasks").set(points).catch((err) => {
+          console.error("Gagal simpan ke Cloud:", err);
+        });
+      }
+    }
+
+    function renderPoints(shouldSave = true) {
       ['do', 'schedule', 'delegate', 'delete'].forEach(q => {
         const container = document.getElementById(`tasks-${q}`);
         container.innerHTML = '';
 
-        points[q].forEach((item, index) => {
+        (points[q] || []).forEach((item, index) => {
           const div = document.createElement('div');
           div.className = `point-item ${item.cancelled ? 'cancelled' : ''}`;
           
@@ -611,8 +675,7 @@
         });
       });
 
-      // Simpan ke kunci utama
-      localStorage.setItem('matrix_editable_points', JSON.stringify(points));
+      if (shouldSave) saveData();
     }
 
     function saveEditedText(q, index, element) {
@@ -621,7 +684,7 @@
         element.innerText = points[q][index].text;
       } else {
         points[q][index].text = updatedText;
-        localStorage.setItem('matrix_editable_points', JSON.stringify(points));
+        renderPoints(true);
       }
     }
 
@@ -637,9 +700,10 @@
       const text = input.value.trim();
       if (!text) return;
 
+      if (!points[q]) points[q] = [];
       points[q].push({ text, cancelled: false });
       input.value = '';
-      renderPoints();
+      renderPoints(true);
     }
 
     function handleEnter(e, q) {
@@ -648,15 +712,16 @@
 
     function toggleCancel(q, index) {
       points[q][index].cancelled = !points[q][index].cancelled;
-      renderPoints();
+      renderPoints(true);
     }
 
     function deletePoint(q, index) {
       points[q].splice(index, 1);
-      renderPoints();
+      renderPoints(true);
     }
 
-    renderPoints();
+    // Render pertama kali
+    renderPoints(false);
   </script>
 </body>
 </html>
