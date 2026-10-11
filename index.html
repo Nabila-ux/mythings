@@ -534,25 +534,53 @@
 
   </div>
 
-  <script>
-    // Memori Penyimpanan Tugasan (LocalStorage)
-    let points = JSON.parse(localStorage.getItem('matrix_editable_points')) || {
-      do: [
-        { text: "Solat fardhu awal waktu", cancelled: false },
-        { text: "Selesaikan amanah kerja kritikal", cancelled: false }
-      ],
-      schedule: [
-        { text: "Tadabbur Al-Quran 1 muka surat", cancelled: false },
-        { text: "Riadah & jaga kesihatan tubuh badan", cancelled: false }
-      ],
-      delegate: [
-        { text: "Serahkan urusan rutin/harian", cancelled: false }
-      ],
-      delete: [
-        { text: "Henti scroll medsos berjam tanpa tujuan", cancelled: false },
-        { text: "Buang tabiat menangguh urusan (taswif)", cancelled: false }
-      ]
-    };
+  <<script>
+    // SISTEM AUTO-RESTORE (Cari semua data lama yang pernah anda taip)
+    function loadSavedHistory() {
+      // Semak semua kunci memori yang pernah digunakan sebelum ini
+      const oldKeys = [
+        'matrix_editable_points',
+        'matrix_islamic_points',
+        'eisenhower_tasks_v2',
+        'eisenhower_exact_shape_tasks',
+        'islamic_matrix_tasks',
+        'eisenhower_tasks'
+      ];
+
+      for (let key of oldKeys) {
+        const data = localStorage.getItem(key);
+        if (data) {
+          try {
+            const parsed = JSON.parse(data);
+            // Jika format objek { do: [], schedule: [] }
+            if (parsed.do && Array.isArray(parsed.do)) {
+              return parsed;
+            }
+            // Jika format senarai array [{text, quadrant}]
+            if (Array.isArray(parsed)) {
+              let converted = { do: [], schedule: [], delegate: [], delete: [] };
+              parsed.forEach(item => {
+                const q = item.quadrant || 'do';
+                if (converted[q]) {
+                  converted[q].push({ text: item.text, cancelled: item.completed || false });
+                }
+              });
+              return converted;
+            }
+          } catch (e) {}
+        }
+      }
+
+      // Default jika memang peranti baru
+      return {
+        do: [{ text: "Solat fardhu awal waktu", cancelled: false }],
+        schedule: [{ text: "Tadabbur Al-Quran 1 muka surat", cancelled: false }],
+        delegate: [{ text: "Serahkan urusan rutin/harian", cancelled: false }],
+        delete: [{ text: "Buang tabiat menangguh urusan (taswif)", cancelled: false }]
+      };
+    }
+
+    let points = loadSavedHistory();
 
     function renderPoints() {
       ['do', 'schedule', 'delegate', 'delete'].forEach(q => {
@@ -583,14 +611,13 @@
         });
       });
 
+      // Simpan ke kunci utama
       localStorage.setItem('matrix_editable_points', JSON.stringify(points));
     }
 
-    // Fungsi menyimpan teks yang diedit secara langsung
     function saveEditedText(q, index, element) {
       const updatedText = element.innerText.trim();
       if (updatedText === '') {
-        // Jika pengguna kosongkan teks, kembalikan teks asal atau padam
         element.innerText = points[q][index].text;
       } else {
         points[q][index].text = updatedText;
@@ -598,7 +625,6 @@
       }
     }
 
-    // Bila tekan Enter semasa edit, keluar daripada mod menaip (blur)
     function handleKeyEdit(e, element) {
       if (e.key === 'Enter') {
         e.preventDefault();
@@ -630,7 +656,6 @@
       renderPoints();
     }
 
-    // Papar tugasan kali pertama
     renderPoints();
   </script>
 </body>
