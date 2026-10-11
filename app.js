@@ -1,4 +1,7 @@
-let tasks = JSON.parse(localStorage.getItem('eisenhower_islamic_tasks')) || [];
+let tasks = JSON.parse(localStorage.getItem('islamic_matrix_tasks')) || [
+  { id: 1, text: 'Solat fardhu di awal waktu', quadrant: 'schedule', completed: false },
+  { id: 2, text: 'Selesaikan amanah kerja/deadline', quadrant: 'do', completed: false }
+];
 let currentTab = 'all';
 
 const taskInput = document.getElementById('task-input');
@@ -8,25 +11,19 @@ const addBtn = document.getElementById('add-btn');
 function switchTab(tab) {
   currentTab = tab;
 
-  // Tukar kelas aktif pada butang tab
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   event.currentTarget.classList.add('active');
 
-  // Papar/Sembunyi kad kuadran
   const quadrants = ['do', 'schedule', 'delegate', 'delete'];
   quadrants.forEach(q => {
     const card = document.getElementById(`card-${q}`);
-    if (tab === 'all' || tab === q) {
-      card.style.display = 'block';
-    } else {
-      card.style.display = 'none';
-    }
+    card.style.display = (tab === 'all' || tab === q) ? 'block' : 'none';
   });
 }
 
-function addTask() {
-  const text = taskInput.value.trim();
-  const quadrant = quadrantSelect.value;
+function addTask(customText = null, customQuad = null) {
+  const text = customText || taskInput.value.trim();
+  const quadrant = customQuad || quadrantSelect.value;
 
   if (!text) return;
 
@@ -37,8 +34,12 @@ function addTask() {
     completed: false
   });
 
-  taskInput.value = '';
+  if (!customText) taskInput.value = '';
   saveAndRender();
+}
+
+function addPreset(text, quadrant) {
+  addTask(text, quadrant);
 }
 
 function toggleTask(id) {
@@ -52,12 +53,12 @@ function deleteTask(id) {
 }
 
 function saveAndRender() {
-  localStorage.setItem('eisenhower_islamic_tasks', JSON.stringify(tasks));
+  localStorage.setItem('islamic_matrix_tasks', JSON.stringify(tasks));
 
   const quadrants = ['do', 'schedule', 'delegate', 'delete'];
   let counts = { do: 0, schedule: 0, delegate: 0, delete: 0 };
+  let completedCount = 0;
 
-  // Kosongkan senarai sebelum render
   quadrants.forEach(q => {
     const listEl = document.getElementById(`list-${q}`);
     listEl.innerHTML = '';
@@ -65,8 +66,9 @@ function saveAndRender() {
 
   tasks.forEach(task => {
     counts[task.quadrant]++;
-    const listEl = document.getElementById(`list-${task.quadrant}`);
+    if (task.completed) completedCount++;
 
+    const listEl = document.getElementById(`list-${task.quadrant}`);
     if (listEl) {
       const li = document.createElement('li');
       li.className = `task-item ${task.completed ? 'completed' : ''}`;
@@ -81,26 +83,32 @@ function saveAndRender() {
     }
   });
 
-  // Kemaskini jumlah & nombor lencana (Badges)
+  // Kemaskini jumlah
   document.getElementById('badge-do').textContent = counts.do;
-  document.getElementById('header-count-do').textContent = counts.do;
-
+  document.getElementById('count-do').textContent = counts.do;
   document.getElementById('badge-schedule').textContent = counts.schedule;
-  document.getElementById('header-count-schedule').textContent = counts.schedule;
-
+  document.getElementById('count-schedule').textContent = counts.schedule;
   document.getElementById('badge-delegate').textContent = counts.delegate;
-  document.getElementById('header-count-delegate').textContent = counts.delegate;
-
+  document.getElementById('count-delegate').textContent = counts.delegate;
   document.getElementById('badge-delete').textContent = counts.delete;
-  document.getElementById('header-count-delete').textContent = counts.delete;
+  document.getElementById('count-delete').textContent = counts.delete;
 
-  document.getElementById('total-count').textContent = `${tasks.length} Tugas`;
+  document.getElementById('total-count').textContent = `${tasks.length} Amal`;
+
+  // Status Muhasabah
+  const statusEl = document.getElementById('muhasabah-status');
+  if (tasks.length === 0) {
+    statusEl.textContent = 'Mula rancang amal keutamaan hari ini';
+  } else if (completedCount === tasks.length) {
+    statusEl.textContent = 'Alhamdulillah, semua amanah selesai!';
+  } else {
+    statusEl.textContent = `${completedCount} daripada ${tasks.length} amal selesai`;
+  }
 }
 
-addBtn.addEventListener('click', addTask);
+addBtn.addEventListener('click', () => addTask());
 taskInput.addEventListener('keypress', (e) => {
   if (e.key === 'Enter') addTask();
 });
 
-// Render kali pertama
 saveAndRender();
