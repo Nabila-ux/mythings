@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eisenhower Matrix</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <header class="main-header">
+    <h1>EISENHOWER MATRIX</h1>
+    <!-- Task Input Bar -->
+    <div class="input-container">
+      <input type="text" id="task-input" placeholder="Enter a new task..." />
+      <select id="quadrant-select">
+        <option value="do">Quadrant 1: Urgent (DO)</option>
+        <option value="schedule">Quadrant 2: Significant (SCHEDULE)</option>
+        <option value="delegate">Quadrant 3: Pressing (DELEGATE)</option>
+        <option value="delete">Quadrant 4: Insignificant (DELETE)</option>
+      </select>
+      <button id="add-btn">+ Add Task</button>
+    </div>
+  </header>
+
+  <div class="matrix-wrapper">
+    <!-- Y-Axis (Importance) -->
+    <div class="y-axis">
+      <span class="axis-label-high">HIGH</span>
+      <div class="arrow-up"></div>
+      <div class="axis-line-vertical"></div>
+      <span class="vertical-text">IMPORTANCE</span>
+      <div class="axis-line-vertical-bottom"></div>
+      <span class="axis-label-low">LOW</span>
+    </div>
+
+    <!-- 4 Quadrants Grid -->
+    <div class="matrix-grid">
+      
+      <!-- Quadrant 1: DO -->
+      <div class="quadrant quad-do" id="quad-do">
+        <div class="quad-header-top">URGENT</div>
+        <div class="quad-header-sub">
+          <strong>DO</strong>
+          <span>These are vital tasks with substantial urgency.</span>
+        </div>
+        <ul class="task-list" id="list-do"></ul>
+      </div>
+
+      <!-- Quadrant 2: SCHEDULE -->
+      <div class="quadrant quad-schedule" id="quad-schedule">
+        <div class="quad-header-top">SIGNIFICANT</div>
+        <div class="quad-header-sub">
+          <strong>SCHEDULE</strong>
+          <span>These are critical tasks with minimal urgency.</span>
+        </div>
+        <ul class="task-list" id="list-schedule"></ul>
+      </div>
+
+      <!-- Quadrant 3: DELEGATE -->
+      <div class="quadrant quad-delegate" id="quad-delegate">
+        <div class="quad-header-top">NOT URGENT</div>
+        <div class="quad-header-sub">
+          <strong>DELEGATE</strong>
+          <span>These are pressing tasks with negligible impact.</span>
+        </div>
+        <ul class="task-list" id="list-delegate"></ul>
+      </div>
+
+      <!-- Quadrant 4: DELETE -->
+      <div class="quadrant quad-delete" id="quad-delete">
+        <div class="quad-header-top">INSIGNIFICANT</div>
+        <div class="quad-header-sub">
+          <strong>DELETE</strong>
+          <span>These are trivial tasks with minor urgency.</span>
+        </div>
+        <ul class="task-list" id="list-delete"></ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- X-Axis (Urgency) -->
+  <div class="x-axis-container">
+    <div class="x-axis">
+      <span class="axis-label-high">HIGH</span>
+      <div class="axis-line-horizontal"></div>
+      <span class="horizontal-text">URGENCY</span>
+      <div class="axis-line-horizontal-right"></div>
+      <div class="arrow-right"></div>
+      <span class="axis-label-low">LOW</span>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

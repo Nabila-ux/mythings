@@ -1,0 +1,266 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f7f9fa;
+  color: #333;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-header {
+  width: 100%;
+  max-width: 1000px;
+  margin-bottom: 20px;
+}
+
+.main-header h1 {
+  font-weight: 400;
+  color: #555;
+  font-size: 26px;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+.input-container {
+  display: flex;
+  gap: 10px;
+  background: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.input-container input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.input-container select, .input-container button {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.input-container button {
+  background-color: #2b9348;
+  color: white;
+  border: none;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.input-container button:hover {
+  background-color: #1e7034;
+}
+
+/* Matrix Wrapper with Y-axis */
+.matrix-wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+}
+
+/* Y-Axis Styling */
+.y-axis {
+  width: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 15px;
+  position: relative;
+}
+
+.y-axis .axis-label-high {
+  font-weight: 700;
+  color: #38b000;
+  font-size: 13px;
+}
+
+.y-axis .axis-label-low {
+  font-weight: 700;
+  color: #e85d04;
+  font-size: 13px;
+}
+
+.axis-line-vertical {
+  width: 6px;
+  flex: 1;
+  background: linear-gradient(to bottom, #70e000, #ffb703);
+}
+
+.axis-line-vertical-bottom {
+  width: 6px;
+  flex: 1;
+  background: linear-gradient(to bottom, #ffb703, #e85d04);
+}
+
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 12px solid #70e000;
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  letter-spacing: 4px;
+  font-weight: 600;
+  color: #444;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+/* Quadrants Grid */
+.matrix-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+}
+
+.quadrant {
+  background: #ffffff;
+  border: 1px solid #dcdcdc;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.quad-header-top {
+  color: #ffffff;
+  font-weight: 700;
+  padding: 8px 12px;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+.quad-header-sub {
+  padding: 6px 12px;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.quad-header-sub strong {
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+/* Color Themes */
+/* Do (Cyan / Teal) */
+.quad-do .quad-header-top { background-color: #38a3a5; }
+.quad-do .quad-header-sub { background-color: #72efdd; color: #0f3d3e; }
+
+/* Schedule (Green) */
+.quad-schedule .quad-header-top { background-color: #007f5f; }
+.quad-schedule .quad-header-sub { background-color: #80ed99; color: #0d421a; }
+
+/* Delegate (Red / Salmon) */
+.quad-delegate .quad-header-top { background-color: #d90429; }
+.quad-delegate .quad-header-sub { background-color: #ff758f; color: #50000e; }
+
+/* Delete (Orange / Amber) */
+.quad-delete .quad-header-top { background-color: #e85d04; }
+.quad-delete .quad-header-sub { background-color: #ffb703; color: #4e2700; }
+
+/* Task List */
+.task-list {
+  list-style: none;
+  padding: 10px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  background: #fdfdfd;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.task-item.completed span {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.task-item button {
+  background: transparent;
+  border: none;
+  color: #e63946;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 2px 6px;
+}
+
+/* X-Axis Styling */
+.x-axis-container {
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 15px;
+  padding-left: 75px; /* Alignment with grid */
+}
+
+.x-axis {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.x-axis .axis-label-high {
+  font-weight: 700;
+  color: #d90429;
+  font-size: 13px;
+}
+
+.x-axis .axis-label-low {
+  font-weight: 700;
+  color: #e85d04;
+  font-size: 13px;
+}
+
+.axis-line-horizontal {
+  flex: 1;
+  height: 6px;
+  background: linear-gradient(to right, #d90429, #ff758f);
+}
+
+.axis-line-horizontal-right {
+  flex: 1;
+  height: 6px;
+  background: linear-gradient(to right, #ffb703, #e85d04);
+}
+
+.horizontal-text {
+  letter-spacing: 3px;
+  font-weight: 600;
+  color: #444;
+  font-size: 14px;
+}
+
+.arrow-right {
+  width: 0; 
+  height: 0; 
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 12px solid #e85d04;
+}
