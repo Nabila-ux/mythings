@@ -1,96 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eisenhower Matrix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Matriks Keutamaan — Fiqh al-Awlawiyyat</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-  <header class="main-header">
-    <h1>EISENHOWER MATRIX</h1>
-    <!-- Task Input Bar -->
-    <div class="input-container">
-      <input type="text" id="task-input" placeholder="Enter a new task..." />
-      <select id="quadrant-select">
-        <option value="do">Quadrant 1: Urgent (DO)</option>
-        <option value="schedule">Quadrant 2: Significant (SCHEDULE)</option>
-        <option value="delegate">Quadrant 3: Pressing (DELEGATE)</option>
-        <option value="delete">Quadrant 4: Insignificant (DELETE)</option>
-      </select>
-      <button id="add-btn">+ Add Task</button>
-    </div>
-  </header>
+  <div class="mobile-app">
+    
+    <!-- Header Aplikasi -->
+    <header class="app-topbar">
+      <div>
+        <div class="brand-row">
+          <span class="user-badge">NABILA • UX</span>
+          <span class="hadith-pill">Rebut 5 Perkara Sebelum 5 Perkara</span>
+        </div>
+        <h1>Matriks Keutamaan</h1>
+        <p class="subtitle">Fiqh al-Awlawiyyat & Pengurusan Masa</p>
+      </div>
+      <div class="total-badge" id="total-count">0 Tugas</div>
+    </header>
 
-  <div class="matrix-wrapper">
-    <!-- Y-Axis (Importance) -->
-    <div class="y-axis">
-      <span class="axis-label-high">HIGH</span>
-      <div class="arrow-up"></div>
-      <div class="axis-line-vertical"></div>
-      <span class="vertical-text">IMPORTANCE</span>
-      <div class="axis-line-vertical-bottom"></div>
-      <span class="axis-label-low">LOW</span>
-    </div>
+    <!-- Navigasi Tab Mobile -->
+    <nav class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('all')">Semua</button>
+      <button class="tab-btn tab-do" onclick="switchTab('do')">⚡ Segera <span id="badge-do">0</span></button>
+      <button class="tab-btn tab-schedule" onclick="switchTab('schedule')">📅 Istiqamah <span id="badge-schedule">0</span></button>
+      <button class="tab-btn tab-delegate" onclick="switchTab('delegate')">🤝 Wakilkan <span id="badge-delegate">0</span></button>
+      <button class="tab-btn tab-delete" onclick="switchTab('delete')">🗑️ Lagha <span id="badge-delete">0</span></button>
+    </nav>
 
-    <!-- 4 Quadrants Grid -->
-    <div class="matrix-grid">
+    <!-- Senarai Kuadran -->
+    <main class="quadrants-scroll">
       
-      <!-- Quadrant 1: DO -->
-      <div class="quadrant quad-do" id="quad-do">
-        <div class="quad-header-top">URGENT</div>
-        <div class="quad-header-sub">
-          <strong>DO</strong>
-          <span>These are vital tasks with substantial urgency.</span>
+      <!-- Kuadran 1: SEGERA / DO -->
+      <section class="mobile-card quad-do" id="card-do">
+        <div class="card-header">
+          <div class="title-row">
+            <span class="status-tag">MENDESAK & PENTING</span>
+            <span class="count-pill" id="header-count-do">0</span>
+          </div>
+          <h2>1. BUAT SEGERA (DO)</h2>
+          <p class="islamic-desc">Wajib, darurat & amanah dengan tarikh luput kritikal.</p>
         </div>
         <ul class="task-list" id="list-do"></ul>
-      </div>
+      </section>
 
-      <!-- Quadrant 2: SCHEDULE -->
-      <div class="quadrant quad-schedule" id="quad-schedule">
-        <div class="quad-header-top">SIGNIFICANT</div>
-        <div class="quad-header-sub">
-          <strong>SCHEDULE</strong>
-          <span>These are critical tasks with minimal urgency.</span>
+      <!-- Kuadran 2: JADUALKAN / SCHEDULE -->
+      <section class="mobile-card quad-schedule" id="card-schedule">
+        <div class="card-header">
+          <div class="title-row">
+            <span class="status-tag">PENTING & UTAMA</span>
+            <span class="count-pill" id="header-count-schedule">0</span>
+          </div>
+          <h2>2. ISTIQAMAH (SCHEDULE)</h2>
+          <p class="islamic-desc">Pelaburan akhirat, menuntut ilmu, kesihatan & keluarga.</p>
         </div>
         <ul class="task-list" id="list-schedule"></ul>
-      </div>
+      </section>
 
-      <!-- Quadrant 3: DELEGATE -->
-      <div class="quadrant quad-delegate" id="quad-delegate">
-        <div class="quad-header-top">NOT URGENT</div>
-        <div class="quad-header-sub">
-          <strong>DELEGATE</strong>
-          <span>These are pressing tasks with negligible impact.</span>
+      <!-- Kuadran 3: WAKILKAN / DELEGATE -->
+      <section class="mobile-card quad-delegate" id="card-delegate">
+        <div class="card-header">
+          <div class="title-row">
+            <span class="status-tag">MENDESAK TAPI REMEH</span>
+            <span class="count-pill" id="header-count-delegate">0</span>
+          </div>
+          <h2>3. WAKILKAN (DELEGATE)</h2>
+          <p class="islamic-desc">Urusan harian yang boleh diagihkan/diserahkan kepada orang lain.</p>
         </div>
         <ul class="task-list" id="list-delegate"></ul>
-      </div>
+      </section>
 
-      <!-- Quadrant 4: DELETE -->
-      <div class="quadrant quad-delete" id="quad-delete">
-        <div class="quad-header-top">INSIGNIFICANT</div>
-        <div class="quad-header-sub">
-          <strong>DELETE</strong>
-          <span>These are trivial tasks with minor urgency.</span>
+      <!-- Kuadran 4: TINGGALKAN / DELETE -->
+      <section class="mobile-card quad-delete" id="card-delete">
+        <div class="card-header">
+          <div class="title-row">
+            <span class="status-tag">TIDAK PENTING</span>
+            <span class="count-pill" id="header-count-delete">0</span>
+          </div>
+          <h2>4. TINGGALKAN (DELETE)</h2>
+          <p class="islamic-desc">Perkara lagha (sia-sia) yang menghabiskan masa tanpa faedah.</p>
         </div>
         <ul class="task-list" id="list-delete"></ul>
-      </div>
+      </section>
 
-    </div>
-  </div>
+    </main>
 
-  <!-- X-Axis (Urgency) -->
-  <div class="x-axis-container">
-    <div class="x-axis">
-      <span class="axis-label-high">HIGH</span>
-      <div class="axis-line-horizontal"></div>
-      <span class="horizontal-text">URGENCY</span>
-      <div class="axis-line-horizontal-right"></div>
-      <div class="arrow-right"></div>
-      <span class="axis-label-low">LOW</span>
-    </div>
+    <!-- Ruang Tambah Tugas di Bahagian Bawah (Bottom Bar) -->
+    <footer class="bottom-bar">
+      <input type="text" id="task-input" placeholder="Tulis tugasan baru..." />
+      <select id="quadrant-select">
+        <option value="do">⚡ Segera (Do)</option>
+        <option value="schedule">📅 Istiqamah (Schedule)</option>
+        <option value="delegate">🤝 Wakilkan (Delegate)</option>
+        <option value="delete">🗑️ Lagha (Delete)</option>
+      </select>
+      <button id="add-btn" aria-label="Tambah Tugas">+</button>
+    </footer>
+
   </div>
 
   <script src="app.js"></script>
