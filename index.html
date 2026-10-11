@@ -5,120 +5,101 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Matriks Keutamaan Amal — Fiqh al-Awlawiyyat</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700;800&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-  <div class="mobile-app">
+  <div class="mobile-container">
     
-    <!-- Header Islamik -->
-    <header class="islamic-header">
-      <div class="header-top">
-        <span class="app-tag">NABILA • UX & ISLAMIC PRODUCTIVITY</span>
-        <span class="hijri-badge">🕌 Fiqh al-Awlawiyyat</span>
-      </div>
-      <h1>Matriks Keutamaan Amal</h1>
-      <p class="quran-quote">"Demi masa, sesungguhnya manusia itu berada dalam kerugian..." — (Surah Al-'Asr)</p>
-      
-      <!-- Kad Muhasabah Ringkas -->
-      <div class="muhasabah-bar">
-        <div>
-          <span class="muhasabah-title">Audit Masa Hari Ini</span>
-          <span class="muhasabah-sub" id="muhasabah-status">Selesaikan yang wajib & utama</span>
-        </div>
-        <div class="amal-count" id="total-count">0 Amal</div>
-      </div>
+    <!-- Tajuk Atas -->
+    <header class="matrix-title">
+      <div class="badge-brand">NABILA • UX</div>
+      <h1>MATRIKS KEUTAMAAN (FIQH AL-AWLAWIYYAT)</h1>
+      <p class="subtitle">Audit Masa & Amal Mengikut Keutamaan Syarak</p>
     </header>
 
-    <!-- Butang Cadangan Pantas (Amal Presets) -->
-    <div class="presets-container">
-      <span class="presets-label">⚡ Tambah Pantas:</span>
-      <div class="presets-scroll">
-        <button class="preset-chip" onclick="addPreset('Solat di awal waktu & zikir', 'schedule')">🕌 Solat Awal Waktu</button>
-        <button class="preset-chip" onclick="addPreset('Selesaikan amanah kerja/deadline', 'do')">⚡ Deadline Kerja</button>
-        <button class="preset-chip" onclick="addPreset('Tadabbur Al-Quran 1 muka', 'schedule')">📖 Baca Quran</button>
-        <button class="preset-chip" onclick="addPreset('Bantu mak/keluarga di rumah', 'do')">❤️ Khidmat Keluarga</button>
-        <button class="preset-chip" onclick="addPreset('Kurangkan scroll TikTok/Medsos', 'delete')">🚫 Henti Lagha</button>
+    <!-- Ruang Tambah Tugasan Pantas -->
+    <div class="input-bar">
+      <input type="text" id="task-input" placeholder="Tulis amanah / tugasan baru..." />
+      <select id="quadrant-select">
+        <option value="do">⚡ Q1: Wajib Segera (Do)</option>
+        <option value="schedule">📅 Q2: Istiqamah (Schedule)</option>
+        <option value="delegate">🤝 Q3: Wakilkan (Delegate)</option>
+        <option value="delete">🗑️ Q4: Tinggalkan Lagha (Delete)</option>
+      </select>
+      <button id="add-btn">+</button>
+    </div>
+
+    <!-- BENTUK MATRIKS 2x2 SEPERTI GAMBAR ASAL -->
+    <div class="matrix-wrapper">
+      
+      <!-- PAKSI Y (IMPORTANCE / KEPENTINGAN) -->
+      <div class="y-axis">
+        <span class="y-label-high">HIGH</span>
+        <div class="arrow-up"></div>
+        <div class="axis-line-vertical-top"></div>
+        <div class="vertical-text">IMPORTANCE (KEPENTINGAN)</div>
+        <div class="axis-line-vertical-bottom"></div>
+        <span class="y-label-low">LOW</span>
+      </div>
+
+      <!-- GRID 4 KOTAK (2x2) -->
+      <div class="matrix-grid">
+        
+        <!-- KOTAK 1: DO (ATAS KIRI) -->
+        <div class="quad-box quad-do">
+          <div class="box-header-main">URGENT</div>
+          <div class="box-header-sub">
+            <strong>DO (WAJIB SEGERA)</strong>
+            <span>Fardhu ain, darurat & amanah kritikal.</span>
+          </div>
+          <ul class="task-list" id="list-do"></ul>
+        </div>
+
+        <!-- KOTAK 2: SCHEDULE (ATAS KANAN) -->
+        <div class="quad-box quad-schedule">
+          <div class="box-header-main">SIGNIFICANT</div>
+          <div class="box-header-sub">
+            <strong>SCHEDULE (ISTIQAMAH)</strong>
+            <span>Ilmu, amal jariah, keluarga & kesihatan.</span>
+          </div>
+          <ul class="task-list" id="list-schedule"></ul>
+        </div>
+
+        <!-- KOTAK 3: DELEGATE (BAWAH KIRI) -->
+        <div class="quad-box quad-delegate">
+          <div class="box-header-main">NOT URGENT</div>
+          <div class="box-header-sub">
+            <strong>DELEGATE (WAKILKAN)</strong>
+            <span>Urusan rutin harian yang boleh diagihkan.</span>
+          </div>
+          <ul class="task-list" id="list-delegate"></ul>
+        </div>
+
+        <!-- KOTAK 4: DELETE (BAWAH KANAN) -->
+        <div class="quad-box quad-delete">
+          <div class="box-header-main">INSIGNIFICANT</div>
+          <div class="box-header-sub">
+            <strong>DELETE (TINGGALKAN)</strong>
+            <span>Perkara lagha (sia-sia) tanpa manfaat.</span>
+          </div>
+          <ul class="task-list" id="list-delete"></ul>
+        </div>
+
       </div>
     </div>
 
-    <!-- Tab Filter Mobile -->
-    <nav class="tab-nav">
-      <button class="tab-btn active" onclick="switchTab('all')">Semua</button>
-      <button class="tab-btn tab-do" onclick="switchTab('do')">1. Wajib Segera <span id="badge-do">0</span></button>
-      <button class="tab-btn tab-schedule" onclick="switchTab('schedule')">2. Istiqamah <span id="badge-schedule">0</span></button>
-      <button class="tab-btn tab-delegate" onclick="switchTab('delegate')">3. Wakalah <span id="badge-delegate">0</span></button>
-      <button class="tab-btn tab-delete" onclick="switchTab('delete')">4. Lagha <span id="badge-delete">0</span></button>
-    </nav>
-
-    <!-- Senarai Kuadran -->
-    <main class="quadrants-scroll">
-      
-      <!-- KUADRAN 1: WAJIB SEGERA & DARURAT -->
-      <section class="mobile-card quad-do" id="card-do">
-        <div class="card-header">
-          <div class="badge-row">
-            <span class="islamic-tag">DARURAT & FARDHU AIN</span>
-            <span class="pill-count" id="count-do">0</span>
-          </div>
-          <h2>1. WAJIB SEGERA (Buat Terus)</h2>
-          <p>Amanah kritikal, janji bertempoh & solat yang hampir luput waktu.</p>
-        </div>
-        <ul class="task-list" id="list-do"></ul>
-      </section>
-
-      <!-- KUADRAN 2: ISTIQAMAH & BEKALAN AKHIRAT -->
-      <section class="mobile-card quad-schedule" id="card-schedule">
-        <div class="card-header">
-          <div class="badge-row">
-            <span class="islamic-tag">PELABURAN AKHIRAT & ILMU</span>
-            <span class="pill-count" id="count-schedule">0</span>
-          </div>
-          <h2>2. ISTIQAMAH (Jadualkan & Rancang)</h2>
-          <p>Kunci kejayaan mukmin: Solat awal, menuntut ilmu, kesihatan diri & silaturahim.</p>
-        </div>
-        <ul class="task-list" id="list-schedule"></ul>
-      </section>
-
-      <!-- KUADRAN 3: URUSAN RUTIN & WAKALAH -->
-      <section class="mobile-card quad-delegate" id="card-delegate">
-        <div class="card-header">
-          <div class="badge-row">
-            <span class="islamic-tag">URUSAN DUNIAWI / WAKALAH</span>
-            <span class="pill-count" id="count-delegate">0</span>
-          </div>
-          <h2>3. WAKILKAN (Agihkan Tugas)</h2>
-          <p>Hal harian yang nampak mendesak tapi boleh diserahkan kepada orang lain.</p>
-        </div>
-        <ul class="task-list" id="list-delegate"></ul>
-      </section>
-
-      <!-- KUADRAN 4: TINGGALKAN LAGHA -->
-      <section class="mobile-card quad-delete" id="card-delete">
-        <div class="card-header">
-          <div class="badge-row">
-            <span class="islamic-tag">HAL SIA-SIA (LAGHA)</span>
-            <span class="pill-count" id="count-delete">0</span>
-          </div>
-          <h2>4. TINGGALKAN (Hapuskan)</h2>
-          <p>Membazir masa, drama medsos, lepak kosong tanpa manfaat dunia dan akhirat.</p>
-        </div>
-        <ul class="task-list" id="list-delete"></ul>
-      </section>
-
-    </main>
-
-    <!-- Bottom Input Bar (Tambah Tugasan Baru) -->
-    <footer class="bottom-bar">
-      <input type="text" id="task-input" placeholder="Tulis niat / tugasan baru..." />
-      <select id="quadrant-select">
-        <option value="do">🔴 Wajib Segera</option>
-        <option value="schedule">🟢 Istiqamah Akhirat</option>
-        <option value="delegate">🟡 Urusan/Wakilkan</option>
-        <option value="delete">⚪ Tinggalkan Lagha</option>
-      </select>
-      <button id="add-btn" aria-label="Tambah">+</button>
-    </footer>
+    <!-- PAKSI X (URGENCY / KEDESAKAN) SEPERTI GAMBAR ASAL -->
+    <div class="x-axis-wrapper">
+      <div class="x-axis">
+        <span class="x-label-high">HIGH</span>
+        <div class="axis-line-horizontal-left"></div>
+        <span class="horizontal-text">URGENCY (KEDESAKAN)</span>
+        <div class="axis-line-horizontal-right"></div>
+        <div class="arrow-right"></div>
+        <span class="x-label-low">LOW</span>
+      </div>
+    </div>
 
   </div>
 
