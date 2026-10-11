@@ -1,103 +1,85 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Matriks Keutamaan Amal — Fiqh al-Awlawiyyat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eisenhower Matrix Template</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700;800&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-  <div class="mobile-container">
+  <div class="template-canvas">
     
-    <!-- Tajuk Atas -->
-    <header class="matrix-title">
-      <div class="badge-brand">NABILA • UX</div>
-      <h1>MATRIKS KEUTAMAAN (FIQH AL-AWLAWIYYAT)</h1>
-      <p class="subtitle">Audit Masa & Amal Mengikut Keutamaan Syarak</p>
-    </header>
+    <!-- Header Template -->
+    <h1 class="template-title">EISENHOWER MATRIX TEMPLATE <span class="light-text">in Google Docs</span></h1>
 
-    <!-- Ruang Tambah Tugasan Pantas -->
-    <div class="input-bar">
-      <input type="text" id="task-input" placeholder="Tulis amanah / tugasan baru..." />
-      <select id="quadrant-select">
-        <option value="do">⚡ Q1: Wajib Segera (Do)</option>
-        <option value="schedule">📅 Q2: Istiqamah (Schedule)</option>
-        <option value="delegate">🤝 Q3: Wakilkan (Delegate)</option>
-        <option value="delete">🗑️ Q4: Tinggalkan Lagha (Delete)</option>
-      </select>
-      <button id="add-btn">+</button>
-    </div>
-
-    <!-- BENTUK MATRIKS 2x2 SEPERTI GAMBAR ASAL -->
-    <div class="matrix-wrapper">
+    <div class="matrix-layout">
       
-      <!-- PAKSI Y (IMPORTANCE / KEPENTINGAN) -->
-      <div class="y-axis">
-        <span class="y-label-high">HIGH</span>
-        <div class="arrow-up"></div>
-        <div class="axis-line-vertical-top"></div>
-        <div class="vertical-text">IMPORTANCE (KEPENTINGAN)</div>
-        <div class="axis-line-vertical-bottom"></div>
-        <span class="y-label-low">LOW</span>
+      <!-- PAKSI Y (IMPORTANCE) -->
+      <div class="axis-y">
+        <span class="y-high">HIGH</span>
+        <div class="y-arrow-head"></div>
+        <div class="y-line-top"></div>
+        <div class="y-text">IMPORTANCE</div>
+        <div class="y-line-bottom"></div>
+        <span class="y-low">LOW</span>
       </div>
 
-      <!-- GRID 4 KOTAK (2x2) -->
+      <!-- 4 KOTAK MATRIX (2x2 GRID) -->
       <div class="matrix-grid">
         
-        <!-- KOTAK 1: DO (ATAS KIRI) -->
-        <div class="quad-box quad-do">
-          <div class="box-header-main">URGENT</div>
-          <div class="box-header-sub">
-            <strong>DO (WAJIB SEGERA)</strong>
-            <span>Fardhu ain, darurat & amanah kritikal.</span>
+        <!-- KOTAK 1: URGENT / DO -->
+        <div class="quad-box">
+          <div class="header-top bg-urgent">URGENT</div>
+          <div class="header-sub bg-do">
+            <span class="sub-title">DO</span>
+            <span class="sub-desc">These are vital tasks with substantial urgency.</span>
           </div>
-          <ul class="task-list" id="list-do"></ul>
+          <div class="content-area" id="box-do" contenteditable="true" placeholder="Type tasks here..."></div>
         </div>
 
-        <!-- KOTAK 2: SCHEDULE (ATAS KANAN) -->
-        <div class="quad-box quad-schedule">
-          <div class="box-header-main">SIGNIFICANT</div>
-          <div class="box-header-sub">
-            <strong>SCHEDULE (ISTIQAMAH)</strong>
-            <span>Ilmu, amal jariah, keluarga & kesihatan.</span>
+        <!-- KOTAK 2: SIGNIFICANT / SCHEDULE -->
+        <div class="quad-box">
+          <div class="header-top bg-significant">SIGNIFICANT</div>
+          <div class="header-sub bg-schedule">
+            <span class="sub-title">SCHEDULE</span>
+            <span class="sub-desc">These are critical tasks with minimal urgency.</span>
           </div>
-          <ul class="task-list" id="list-schedule"></ul>
+          <div class="content-area" id="box-schedule" contenteditable="true" placeholder="Type tasks here..."></div>
         </div>
 
-        <!-- KOTAK 3: DELEGATE (BAWAH KIRI) -->
-        <div class="quad-box quad-delegate">
-          <div class="box-header-main">NOT URGENT</div>
-          <div class="box-header-sub">
-            <strong>DELEGATE (WAKILKAN)</strong>
-            <span>Urusan rutin harian yang boleh diagihkan.</span>
+        <!-- KOTAK 3: NOT URGENT / DELEGATE -->
+        <div class="quad-box">
+          <div class="header-top bg-not-urgent">NOT URGENT</div>
+          <div class="header-sub bg-delegate">
+            <span class="sub-title">DELEGATE</span>
+            <span class="sub-desc">These are pressing tasks with negligible impact.</span>
           </div>
-          <ul class="task-list" id="list-delegate"></ul>
+          <div class="content-area" id="box-delegate" contenteditable="true" placeholder="Type tasks here..."></div>
         </div>
 
-        <!-- KOTAK 4: DELETE (BAWAH KANAN) -->
-        <div class="quad-box quad-delete">
-          <div class="box-header-main">INSIGNIFICANT</div>
-          <div class="box-header-sub">
-            <strong>DELETE (TINGGALKAN)</strong>
-            <span>Perkara lagha (sia-sia) tanpa manfaat.</span>
+        <!-- KOTAK 4: INSIGNIFICANT / DELETE -->
+        <div class="quad-box">
+          <div class="header-top bg-insignificant">INSIGNIFICANT</div>
+          <div class="header-sub bg-delete">
+            <span class="sub-title">DELETE</span>
+            <span class="sub-desc">These are trivial tasks with minor urgency.</span>
           </div>
-          <ul class="task-list" id="list-delete"></ul>
+          <div class="content-area" id="box-delete" contenteditable="true" placeholder="Type tasks here..."></div>
         </div>
 
       </div>
     </div>
 
-    <!-- PAKSI X (URGENCY / KEDESAKAN) SEPERTI GAMBAR ASAL -->
-    <div class="x-axis-wrapper">
-      <div class="x-axis">
-        <span class="x-label-high">HIGH</span>
-        <div class="axis-line-horizontal-left"></div>
-        <span class="horizontal-text">URGENCY (KEDESAKAN)</span>
-        <div class="axis-line-horizontal-right"></div>
-        <div class="arrow-right"></div>
-        <span class="x-label-low">LOW</span>
+    <!-- PAKSI X (URGENCY) -->
+    <div class="axis-x-wrapper">
+      <div class="axis-x">
+        <span class="x-high">HIGH</span>
+        <div class="x-line-left"></div>
+        <span class="x-text">URGENCY</span>
+        <div class="x-line-right"></div>
+        <div class="x-arrow-head"></div>
+        <span class="x-low">LOW</span>
       </div>
     </div>
 
