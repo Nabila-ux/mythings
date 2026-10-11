@@ -32,7 +32,7 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
 
-    /* TAJUK ASAL (DIBUANG "in Google Docs") */
+    /* TAJUK UTAMA (TANPA in Google Docs) */
     .doc-title {
       font-size: 19px;
       font-weight: 800;
@@ -41,7 +41,7 @@
       margin-bottom: 8px;
     }
 
-    /* BANNER MOTIVASI & PENDORONG PANTAS (HAPUS PENANGGUHAN) */
+    /* BANNER MOTIVASI: HAPUS PENANGGUHAN (TASWIF) */
     .motivation-banner {
       background: #f0fdf4;
       border: 1px solid #bbf7d0;
@@ -200,7 +200,7 @@
     .bg-insignificant { background-color: #f16e23; }
     .bg-delete { background-color: #fdb035; }
 
-    /* RUANG TUGASAN DALAM BENTUK POINT (BULLET POINTS) */
+    /* RUANG TUGASAN POINT (EDITABLE) */
     .task-area {
       flex: 1;
       padding: 6px 8px;
@@ -213,28 +213,44 @@
     .point-item {
       display: flex;
       align-items: flex-start;
-      gap: 6px;
+      gap: 5px;
       font-size: 11px;
-      line-height: 1.3;
-      padding: 3px 4px;
+      line-height: 1.35;
+      padding: 3px 5px;
       border-radius: 4px;
       background: #fdfdfd;
-      border: 1px solid #f1f5f9;
+      border: 1px solid #e2e8f0;
+      transition: background 0.15s;
+    }
+
+    .point-item:focus-within {
+      background: #ffffff;
+      border-color: #0f172a;
+      box-shadow: 0 0 0 1px #0f172a;
     }
 
     .bullet-dot {
       color: #4b5563;
-      font-size: 14px;
-      line-height: 1;
+      font-size: 13px;
+      line-height: 1.2;
       user-select: none;
+      cursor: pointer;
     }
 
+    /* TEKS YANG BOLEH DIEDIT TERUS (EDITABLE INLINE) */
     .point-text {
       flex: 1;
-      cursor: pointer;
       color: #1e293b;
       font-weight: 500;
       word-break: break-word;
+      outline: none;
+      cursor: text;
+      padding: 1px 2px;
+      border-radius: 2px;
+    }
+
+    .point-text:focus {
+      background: #f8fafc;
     }
 
     /* APABILA DIBATALKAN / SELESAI */
@@ -251,6 +267,7 @@
       display: flex;
       align-items: center;
       gap: 2px;
+      user-select: none;
     }
 
     .cancel-toggle-btn {
@@ -260,7 +277,7 @@
       font-weight: 700;
       color: #64748b;
       cursor: pointer;
-      padding: 1px 4px;
+      padding: 2px 4px;
       border-radius: 3px;
     }
 
@@ -272,9 +289,10 @@
       background: none;
       border: none;
       color: #cbd5e1;
-      font-size: 13px;
+      font-size: 14px;
       cursor: pointer;
-      padding: 0 4px;
+      padding: 0 3px;
+      line-height: 1;
     }
 
     .del-btn:hover {
@@ -449,7 +467,7 @@
           </div>
           <div class="task-area" id="tasks-do"></div>
           <div class="add-point-bar">
-            <input type="text" id="input-do" placeholder="+ Tambah point segera..." onkeypress="handleEnter(event, 'do')" />
+            <input type="text" id="input-do" placeholder="+ Tambah point..." onkeypress="handleEnter(event, 'do')" />
             <button onclick="addTask('do')">+</button>
           </div>
         </div>
@@ -464,7 +482,7 @@
           </div>
           <div class="task-area" id="tasks-schedule"></div>
           <div class="add-point-bar">
-            <input type="text" id="input-schedule" placeholder="+ Tambah point istiqamah..." onkeypress="handleEnter(event, 'schedule')" />
+            <input type="text" id="input-schedule" placeholder="+ Tambah point..." onkeypress="handleEnter(event, 'schedule')" />
             <button onclick="addTask('schedule')">+</button>
           </div>
         </div>
@@ -479,7 +497,7 @@
           </div>
           <div class="task-area" id="tasks-delegate"></div>
           <div class="add-point-bar">
-            <input type="text" id="input-delegate" placeholder="+ Tambah point wakalah..." onkeypress="handleEnter(event, 'delegate')" />
+            <input type="text" id="input-delegate" placeholder="+ Tambah point..." onkeypress="handleEnter(event, 'delegate')" />
             <button onclick="addTask('delegate')">+</button>
           </div>
         </div>
@@ -494,7 +512,7 @@
           </div>
           <div class="task-area" id="tasks-delete"></div>
           <div class="add-point-bar">
-            <input type="text" id="input-delete" placeholder="+ Catat point lagha untuk dibuang..." onkeypress="handleEnter(event, 'delete')" />
+            <input type="text" id="input-delete" placeholder="+ Tambah point..." onkeypress="handleEnter(event, 'delete')" />
             <button onclick="addTask('delete')">+</button>
           </div>
         </div>
@@ -518,7 +536,7 @@
 
   <script>
     // Memori Penyimpanan Tugasan (LocalStorage)
-    let points = JSON.parse(localStorage.getItem('matrix_islamic_points')) || {
+    let points = JSON.parse(localStorage.getItem('matrix_editable_points')) || {
       do: [
         { text: "Solat fardhu awal waktu", cancelled: false },
         { text: "Selesaikan amanah kerja kritikal", cancelled: false }
@@ -528,7 +546,7 @@
         { text: "Riadah & jaga kesihatan tubuh badan", cancelled: false }
       ],
       delegate: [
-        { text: "Serahkan tugas rutin/urusan harian", cancelled: false }
+        { text: "Serahkan urusan rutin/harian", cancelled: false }
       ],
       delete: [
         { text: "Henti scroll medsos berjam tanpa tujuan", cancelled: false },
@@ -544,21 +562,48 @@
         points[q].forEach((item, index) => {
           const div = document.createElement('div');
           div.className = `point-item ${item.cancelled ? 'cancelled' : ''}`;
+          
           div.innerHTML = `
-            <span class="bullet-dot">•</span>
-            <span class="point-text" onclick="toggleCancel('${q}', ${index})">${item.text}</span>
+            <span class="bullet-dot" onclick="toggleCancel('${q}', ${index})">•</span>
+            <span 
+              class="point-text" 
+              contenteditable="true" 
+              spellcheck="false"
+              onblur="saveEditedText('${q}', ${index}, this)"
+              onkeydown="handleKeyEdit(event, this)"
+              title="Tekan untuk ubah teks">${item.text}</span>
             <div class="action-btn-group">
               <button class="cancel-toggle-btn" onclick="toggleCancel('${q}', ${index})">
                 ${item.cancelled ? 'Undo' : 'Batal'}
               </button>
-              <button class="del-btn" onclick="deletePoint('${q}', ${index})">&times;</button>
+              <button class="del-btn" onclick="deletePoint('${q}', ${index})" title="Padam">&times;</button>
             </div>
           `;
           container.appendChild(div);
         });
       });
 
-      localStorage.setItem('matrix_islamic_points', JSON.stringify(points));
+      localStorage.setItem('matrix_editable_points', JSON.stringify(points));
+    }
+
+    // Fungsi menyimpan teks yang diedit secara langsung
+    function saveEditedText(q, index, element) {
+      const updatedText = element.innerText.trim();
+      if (updatedText === '') {
+        // Jika pengguna kosongkan teks, kembalikan teks asal atau padam
+        element.innerText = points[q][index].text;
+      } else {
+        points[q][index].text = updatedText;
+        localStorage.setItem('matrix_editable_points', JSON.stringify(points));
+      }
+    }
+
+    // Bila tekan Enter semasa edit, keluar daripada mod menaip (blur)
+    function handleKeyEdit(e, element) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        element.blur();
+      }
     }
 
     function addTask(q) {
@@ -585,7 +630,7 @@
       renderPoints();
     }
 
-    // Papar tugas kali pertama
+    // Papar tugasan kali pertama
     renderPoints();
   </script>
 </body>
